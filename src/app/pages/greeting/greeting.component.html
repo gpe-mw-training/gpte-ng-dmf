@@ -1,0 +1,62 @@
+<nb-card>
+    <nb-card-header>Customer Greeting</nb-card-header>
+    <nb-card-body>
+        <form class="form-horizontal" #greetingForm="ngForm" (ngSubmit)="onSubmit(greetingForm.value)">
+            <!--<fieldset>
+                <legend>Decision Management Server Connection</legend>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">API URL</label>
+                    <div class="col-sm-9">
+                        <input type="url" required placeholder="API URL" class="form-control" name="dmApiUrl" #dmApiUrlRef="ngModel" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">API User Name</label>
+                    <div class="col-sm-3">
+                        <input type="text" required placeholder="API User Name" class="form-control" name="dmApiUserName" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">API Password</label>
+                    <div class="col-sm-3">
+                        <input type="password" required placeholder="API Password" class="form-control" name="dmApiPassword" ngModel />
+                    </div>
+                </div>
+            </fieldset>-->
+            <fieldset>
+                <legend>Customer</legend>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" required placeholder="Customer Name" class="form-control" name="customerName" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">Gender</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" name="selGender" [ngModel]="defaultGender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-3 control-label">Marital Status</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" name="selMaritalStatus" [ngModel]="defaultMaritalStatus">
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Current Hour</legend>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" name="useCurrent" class="form-check-input" [(ngModel)]="useCurrent" /> Use Current Hour
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Hour</label>
+                    <div class="col-sm-3">
+                        <input type="number" [disabled]="useCurrent" placeholder="hour" class="form-control" name="currentHour" ngModel />
+                    </div>
+                </div>
+            </fieldset>
+            <button [disabled]="!greetingForm.form.valid" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </nb-card-body>
+</nb-card>
