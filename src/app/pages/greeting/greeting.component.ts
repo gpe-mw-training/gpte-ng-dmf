@@ -6,7 +6,7 @@ import { RuleExecutorService } from '../../@core/data/rule-executor.service';
     selector: 'ngx-greeting',
     styleUrls: ['./greeting.component.scss'],
     templateUrl: './greeting.component.html',
-    providers: [ RuleExecutorService ]
+    providers: [ RuleExecutorService, ],
 })
 export class GreetingComponent {
     defaultGender = 'Male';
@@ -26,15 +26,15 @@ export class GreetingComponent {
     this.isError = false;
     this.isCompleted = false;
 
-    this._ruleExecutorService.postGreetingRules(value).subscribe(
-      response => {
-        this.loading = false;
-        console.log(response);
-        this.greeting = response['execution-results'].results[0].value['com.myteam.customer_greeting.GreetingResponse'].greeting;
-        this.salutation = response['execution-results'].results[0].value['com.myteam.customer_greeting.GreetingResponse'].salutation;
+    this._ruleExecutorService.postGreetingRules(value).subscribe( 
+      response => { 
+        this.loading = false; 
+        const gResponsePackage = 'com.myteam.customer_greeting.GreetingResponse'; 
+        const executionResultIndex = response['execution-results'].results[0].value[gResponsePackage]; 
+        this.greeting = executionResultIndex.greeting; 
+        this.salutation = executionResultIndex.salutation; 
       }, 
-      fail => { console.log(fail); this.loading = false; this.isError = true;}
-    );
-    console.log(value);
-  }
+      fail => { this.loading = false; this.isError = true; },
+    ); 
+  } 
 }

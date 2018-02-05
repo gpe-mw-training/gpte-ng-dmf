@@ -9,6 +9,6 @@ import { GreetingComponent } from './greeting.component';
     ],
     declarations: [
         GreetingComponent,
-    ]
+    ],
 })
 export class GreetingModule { }

@@ -16,45 +16,44 @@ export class RuleExecutorService {
   postGreetingRules(value: any): Observable<any> {
     // /services/rest/server/containers/instances/mortgages
     const _containerInstance = '/instances/customer-greeting';
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    headers.append("Authorization", "Basic " + btoa(value.dmApiUserName + ":" + value.dmApiPassword));
-    let options = new RequestOptions({ headers: headers });
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    headers.append('Authorization', 'Basic ' + btoa(value.dmApiUserName + ':' + value.dmApiPassword));
+    const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      value.dmApiUrl + this._containerName + _containerInstance, 
+      value.dmApiUrl + this._containerName + _containerInstance,  
       this.getCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 
-  private getCommandRequest(value:any): any {
-    let commandRequest = {
-      "commands": []
+  private getCommandRequest(value:any): any { 
+    const commandRequest = {
+      "commands": [],
     };
 
-    let insertGreetingRequestCommand = {
-      "insert": {
-        "object": { "com.myteam.customer_greeting.GreetingRequest": this.getGreetingRequest(value) },
-        "out-identifier": "greetingRequest",
-        "return-object": false
-      }
+    const insertGreetingRequestCommand = {
+      'insert': {
+        'object': { 'com.myteam.customer_greeting.GreetingRequest': this.getGreetingRequest(value) },
+        'out-identifier': 'greetingRequest',
+        'return-object': false,
+      },
     };
     commandRequest.commands.push(insertGreetingRequestCommand);
 
-    let insertCustomerCommand = {
-      "insert": {
-        "object": { "com.myteam.customer_greeting.Customer": this.getCustomer(value) },
-        "out-identifier": "customer",
-        "return-object": false
-      }
+    const insertCustomerCommand = {
+      'insert': {
+        'object': { 'com.myteam.customer_greeting.Customer': this.getCustomer(value) },
+        'out-identifier': 'customer',
+        'return-object': false,
+      },
     };
     commandRequest.commands.push(insertCustomerCommand);
-    
-    commandRequest.commands.push({"fire-all-rules": {}});
+    commandRequest.commands.push({'fire-all-rules': {}});
     return commandRequest;
   }
 
   private getGreetingRequest(value: any): GreetingRequest {
-    let greetingRequest: GreetingRequest = new GreetingRequest();
+    const greetingRequest: GreetingRequest = new GreetingRequest();
     if(value.useCurrent || value.currentHour < 0 || value.currentHour > 23) {
-      let d = new Date();
+      const d = new Date(); 
       greetingRequest.currentHour = d.getHours();
     } else {
       greetingRequest.currentHour = value.currentHour;
@@ -63,7 +62,7 @@ export class RuleExecutorService {
   }
 
   private getCustomer(value: any): Customer {
-    let customer: Customer = new Customer();
+    const customer: Customer = new Customer();
     customer.gender = value.selGender;
     customer.maritalStatus = value.selMaritalStatus;
     return customer;
