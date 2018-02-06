@@ -1,0 +1,105 @@
+<nb-card>
+    <nb-card-header>Customer Greeting</nb-card-header>
+    <nb-card-body>
+        <form class="form-horizontal" #mortgageForm="ngForm" (ngSubmit)="onSubmit(mortgageForm.value)">
+            <!-- <fieldset>
+                <legend>Decision Management Server Connection</legend>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">API URL</label>
+                    <div class="col-sm-9">
+                        <input type="url" required placeholder="API URL" class="form-control" name="dmApiUrl" #dmApiUrlRef="ngModel" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">API User Name</label>
+                    <div class="col-sm-3">
+                        <input type="text" required placeholder="API User Name" class="form-control" name="dmApiUserName" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">API Password</label>
+                    <div class="col-sm-3">
+                        <input type="password" required placeholder="API Password" class="form-control" name="dmApiPassword" ngModel />
+                    </div>
+                </div>
+            </fieldset> -->
+            <fieldset>
+                <legend>Applicant</legend>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" placeholder="Applicant Name" class="form-control" name="applicantName" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">Age</label>
+                    <div class="col-sm-3">
+                        <input type="number" required placeholder="Applicant Age" class="form-control" name="applicantAge" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">Credit Rate</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" name="selCreditRate" [ngModel]="defaultCreditRate">
+                            <option value="OK" selected>OK</option>
+                            <option value="AA">AA</option>
+                            <option value="Sub prime">Sub prime</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Bankruptcy</legend>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" name="bankruptcyDetected" class="form-check-input" [(ngModel)]="bankruptcyDetected" /> Bankrupcy Detected
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Year</label>
+                    <div class="col-sm-3">
+                        <input type="number" [disabled]="!bankruptcyDetected" placeholder="Year" class="form-control" name="bankruptcyYear" ngModel
+                        />
+                    </div>
+                    <label class="col-sm-3 control-label">Amount</label>
+                    <div class="col-sm-3">
+                        <input type="number" [disabled]="!bankruptcyDetected" placeholder="Amount" class="form-control" name="bankruptcyAmount" ngModel
+                        />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Income Source</legend>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" name="incomeValidated" class="form-check-input" [(ngModel)]="incomeValidated" /> Income Validated
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Income Amount</label>
+                    <div class="col-sm-3">
+                        <input type="number" [disabled]="!incomeValidated" placeholder="Income Amount" class="form-control" name="incomeAmount" ngModel
+                        />
+                    </div>
+                    <label class="col-sm-3 control-label">Income Type</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" [disabled]="!incomeValidated" name="selIncomeType" [ngModel]="defaultIncomeType">
+                            <option value="Job" selected>Job</option>
+                            <option value="Asset">Asset</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Loan Details</legend>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Loan Amount</label>
+                    <div class="col-sm-2">
+                        <input type="number" required placeholder="Loan Amount" class="form-control" name="loanAmount" ngModel />
+                    </div>
+                    <label class="col-sm-2 control-label">Deposit Max Amount</label>
+                    <div class="col-sm-2">
+                        <input type="number" required placeholder="Deposit Amount" class="form-control" name="depositAmount" ngModel />
+                    </div>
+                    <label class="col-sm-2 control-label">Mortgage Length</label>
+                    <div class="col-sm-2">
+                        <input type="number" required placeholder="Years" class="form-control" name="mortgageLength" ngModel />
+                    </div>
+                </div>
+            </fieldset>
+            <button [disabled]="!mortgageForm.form.valid" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </nb-card-body>
+</nb-card>

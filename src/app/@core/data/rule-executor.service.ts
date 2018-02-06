@@ -6,6 +6,10 @@ import 'rxjs/add/operator/map';
 
 import { GreetingRequest } from './greeting-request';
 import { Customer } from './customer';
+import { Applicant } from './applicant';
+import { IncomeSource } from './income-source';
+import { LoanApplication } from './loan-application';
+import { Bankruptcy } from './bankruptcy';
 
 @Injectable()
 export class RuleExecutorService {
@@ -22,6 +26,103 @@ export class RuleExecutorService {
     return this._http.post(
       value.dmApiUrl + this._containerName + _containerInstance,
       this.getCommandRequest(value), options).map((r: Response) => r.json().result);
+  }
+
+  postMortgagesRules(value: any): Observable<any> {
+    // /services/rest/server/containers/instances/mortgages
+    const _containerInstance = '/instances/mortgages';
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    headers.append("Authorization", "Basic " + btoa(value.dmApiUserName + ":" + value.dmApiPassword));
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(
+      value.dmApiUrl + this._containerName + _containerInstance,
+      this.getMortgagesCommandRequest(value), options).map((r: Response) => r.json().result);
+  }
+
+  private getMortgagesCommandRequest(value: any): any {
+    let commandRequest = {
+      "lookup": "ksession.stateless",
+      "commands": []
+    };
+
+    let insertApplicantCommand = {
+      "insert": {
+        "object": { "mortgages.mortgages.Applicant": this.getApplicant(value) },
+        "out-identifier": "applicant", "return-object": true
+      }
+    };
+    commandRequest.commands.push(insertApplicantCommand);
+    let incomeSource: IncomeSource = this.getIncomeSource(value);
+    if (incomeSource != null) {
+      let insertIncomeSourceCommand = {
+        "insert": {
+          "object": { "mortgages.mortgages.IncomeSource": incomeSource },
+          "out-identifier": "incomeSource", "return-object": false
+        }
+      };
+      commandRequest.commands.push(insertIncomeSourceCommand);
+    }
+
+    let insertApplicationCommand = {
+      "insert": {
+        "object": { "mortgages.mortgages.LoanApplication": this.getLoanApplication(value) },
+        "out-identifier": "loanApplication", "return-object": true
+      }
+    };
+    commandRequest.commands.push(insertApplicationCommand);
+
+    let bankruptcy: Bankruptcy = this.getBankruptcy(value);
+    if (bankruptcy != null) {
+      let insertBankruptcyCommand = {
+        "insert": {
+          "object": { "mortgages.mortgages.Bankruptcy": bankruptcy },
+          "out-identifier": "bankruptcy", "return-object": false
+        }
+      };
+      commandRequest.commands.push(insertBankruptcyCommand);
+    }
+
+    commandRequest.commands.push({ "fire-all-rules": {} });
+    return commandRequest;
+  }
+
+  private getApplicant(value: any): Applicant {
+    let applicant: Applicant = new Applicant();
+    applicant.age = value.applicantAge;
+    applicant.name = value.applicantName;
+    applicant.creditRating = value.selCreditRate;
+    applicant.applicationDate = new Date();
+    return applicant;
+  }
+
+  private getIncomeSource(value: any): IncomeSource {
+    if (!value.incomeValidated) {
+      return null;
+    } else {
+      let is: IncomeSource = new IncomeSource();
+      is.amount = value.incomeAmount;
+      is.type = value.selIncomeType;
+      return is;
+    }
+  }
+
+  private getLoanApplication(value: any): LoanApplication {
+    let application: LoanApplication = new LoanApplication();
+    application.amount = value.loanAmount;
+    application.deposit = value.depositAmount;
+    application.lengthYears = value.mortgageLength;
+    return application;
+  }
+
+  private getBankruptcy(value: any): Bankruptcy {
+    if (!value.bankruptcyDetected) {
+      return null;
+    } else {
+      let bankruptcy: Bankruptcy = new Bankruptcy();
+      bankruptcy.amountOwned = value.bankruptcyAmount;
+      bankruptcy.yearOfOccurrence = value.bankruptcyYear;
+      return bankruptcy;
+    }
   }
 
   private getCommandRequest(value: any): any {
