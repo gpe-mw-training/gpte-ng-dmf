@@ -9,8 +9,8 @@ import { RuleExecutorService } from '../../@core/data/rule-executor.service';
     providers: [RuleExecutorService],
 })
 export class MortgagesComponent {
-    public defaultCreditRate = "OK";
-    public defaultIncomeType = "Job";
+    public defaultCreditRate = 'OK';
+    public defaultIncomeType = 'Job';
     public bankruptcyDetected = false;
     public incomeValidated = false;
     public loading = false;
