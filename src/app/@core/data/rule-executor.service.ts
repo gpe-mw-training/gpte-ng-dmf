@@ -28,7 +28,7 @@ export class RuleExecutorService {
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
       this._dmApiUrl + this._containerName + _containerInstance,
-      this.getCommandRequest(value), options).map((r: Response) => r.json().result);
+      this.getGreetingCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 
   postMortgagesRules(value: any): Observable<any> {
@@ -128,7 +128,7 @@ export class RuleExecutorService {
     }
   }
 
-  private getCommandRequest(value: any): any {
+  private getGreetingCommandRequest(value: any): any {
     const commandRequest = {
       'commands': [],
     };
@@ -150,6 +150,15 @@ export class RuleExecutorService {
       },
     };
     commandRequest.commands.push(insertCustomerCommand);
+
+    const insertGreetingResponseCommand = {
+      'insert': {
+        'object': { 'com.myteam.customer_greeting.GreetingResponse': {} },
+        'out-identifier': 'response',
+        'return-object': true,
+      },
+    };
+    commandRequest.commands.push(insertGreetingResponseCommand);
     commandRequest.commands.push({ 'fire-all-rules': {} });
     return commandRequest;
   }
