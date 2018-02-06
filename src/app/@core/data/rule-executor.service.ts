@@ -14,6 +14,9 @@ import { Bankruptcy } from './bankruptcy';
 @Injectable()
 export class RuleExecutorService {
 
+  private _dmApiUrl = 'http://demo-kieserver-dtf-rhdm.apps.dev37.openshift.opentlc.com/';
+  private _dmUserName = 'adminUser';
+  private _dmCredentials = 'test1234!';
   private _containerName: string = 'services/rest/server/containers';
   constructor(private _http: Http) { }
 
@@ -21,10 +24,10 @@ export class RuleExecutorService {
     // /services/rest/server/containers/instances/mortgages
     const _containerInstance = '/instances/customer-greeting';
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    headers.append('Authorization', 'Basic ' + btoa(value.dmApiUserName + ':' + value.dmApiPassword));
+    headers.append('Authorization', 'Basic ' + btoa(this._dmUserName + ':' + this._dmCredentials));
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      value.dmApiUrl + this._containerName + _containerInstance,
+      this._dmApiUrl + this._containerName + _containerInstance,
       this.getCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 
@@ -32,10 +35,10 @@ export class RuleExecutorService {
     // /services/rest/server/containers/instances/mortgages
     const _containerInstance = '/instances/mortgages';
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    headers.append('Authorization', 'Basic ' + btoa(value.dmApiUserName + ':' + value.dmApiPassword));
+    headers.append('Authorization', 'Basic ' + btoa(this._dmUserName + ':' + this._dmCredentials));
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      value.dmApiUrl + this._containerName + _containerInstance,
+      this._dmApiUrl + this._containerName + _containerInstance,
       this.getMortgagesCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 

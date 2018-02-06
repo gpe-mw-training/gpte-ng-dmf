@@ -1,7 +1,7 @@
 <nb-card>
     <nb-card-header>Customer Greeting</nb-card-header>
     <nb-card-body>
-        <form class="form-horizontal" #greetingForm="ngForm" (ngSubmit)="onSubmit(greetingForm.value)">
+        <form #greetingForm="ngForm" (ngSubmit)="onSubmit(greetingForm.value)">
             <!--<fieldset>
                 <legend>Decision Management Server Connection</legend>
                 <div class="form-group">
@@ -21,11 +21,13 @@
             </fieldset>-->
             <fieldset>
                 <legend>Customer</legend>
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
                         <input type="text" required placeholder="Customer Name" class="form-control" name="customerName" ngModel />
                     </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-3 control-label">Gender</label>
                     <div class="col-sm-3">
                         <select class="form-control" name="selGender" [ngModel]="defaultGender">
