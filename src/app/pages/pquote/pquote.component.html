@@ -1,1 +1,61 @@
-<h1>POLICY QUOTE FORM HERE</h1>
+<nb-card>
+    <nb-card-header>Car Policy Quote</nb-card-header>
+    <nb-card-body>
+        <form #pquoteForm="ngForm" (ngSubmit)="onSubmit(pquoteForm.value)">
+            <fieldset>
+                <legend>Driver</legend>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" placeholder="Driver Name" class="form-control" name="name" ngModel />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">Age</label>
+                    <div class="col-sm-3">
+                        <input type="number" required placeholder="Age" class="form-control" name="age" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">Credit Rate</label>
+                    <div class="col-sm-3">
+                        <input type="number" required placeholder="Credit Rate" class="form-control" name="creditRate" ngModel />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Driving Behavior</legend>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">Accidents</label>
+                    <div class="col-sm-3">
+                        <input type="number" required placeholder="# of Accidents" class="form-control" name="accidents" ngModel />
+                    </div>
+                    <label class="col-sm-3 control-label">Tickets</label>
+                    <div class="col-sm-3">
+                        <input type="number" required placeholder="# of Tickets" class="form-control" name="tickets" ngModel />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Vehicle Details</legend>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">Car Year</label>
+                    <div class="col-sm-2">
+                        <input type="number" required placeholder="Car Year" class="form-control" name="year" ngModel />
+                    </div>
+                    <label class="col-sm-2 control-label">Plates</label>
+                    <div class="col-sm-2">
+                        <input type="text" required placeholder="Plates" class="form-control" name="plates" ngModel />
+                    </div>
+                    <label class="col-sm-2 control-label">Plates State</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" required name="selPlatesState" [ngModel]="defaultCreditRate">
+                            <option value="FL">OK</option>
+                            <option value="TX">TX</option>
+                            <!-- TODO: Option select US states -->
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <button [disabled]="!pquoteForm.form.valid" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </nb-card-body>
+</nb-card>
