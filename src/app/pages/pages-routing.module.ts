@@ -5,6 +5,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GreetingComponent } from './greeting/greeting.component';
 import { MortgagesComponent } from './mortgages/mortgages.component';
+import { PquoteComponent } from './pquote/pquote.component';
 
 const routes: Routes = [{
   path: '',
@@ -18,6 +19,9 @@ const routes: Routes = [{
   }, {
     path: 'mortgages',
     component: MortgagesComponent,
+  }, {
+    path: 'pquote',
+    component: PquoteComponent,
   }, {
     path: '',
     redirectTo: 'dashboard',

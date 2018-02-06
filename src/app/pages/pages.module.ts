@@ -4,6 +4,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { GreetingModule } from './greeting/greeting.module';
 import { MortgagesModule } from './mortgages/mortgages.module';
+import { PquoteModule } from './pquote/pquote.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 
@@ -18,6 +19,7 @@ const PAGES_COMPONENTS = [
     DashboardModule,
     GreetingModule,
     MortgagesModule,
+    PquoteModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,
