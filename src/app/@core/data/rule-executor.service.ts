@@ -20,13 +20,13 @@ export class RuleExecutorService {
     headers.append('Authorization', 'Basic ' + btoa(value.dmApiUserName + ':' + value.dmApiPassword));
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      value.dmApiUrl + this._containerName + _containerInstance,  
+      value.dmApiUrl + this._containerName + _containerInstance, 
       this.getCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 
-  private getCommandRequest(value:any): any { 
+  private getCommandRequest( value:any ): any { 
     const commandRequest = {
-      "commands": [],
+      'commands': [ ],
     };
 
     const insertGreetingRequestCommand = {
@@ -53,7 +53,7 @@ export class RuleExecutorService {
   private getGreetingRequest(value: any): GreetingRequest {
     const greetingRequest: GreetingRequest = new GreetingRequest();
     if(value.useCurrent || value.currentHour < 0 || value.currentHour > 23) {
-      const d = new Date(); 
+      const d = new Date( ); 
       greetingRequest.currentHour = d.getHours();
     } else {
       greetingRequest.currentHour = value.currentHour;
