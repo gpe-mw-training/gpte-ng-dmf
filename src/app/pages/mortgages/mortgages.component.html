@@ -1,7 +1,7 @@
-<nb-card>
-    <nb-card-header>Customer Greeting</nb-card-header>
+<nb-card >
+    <nb-card-header>Mortgage Loan Evaluation</nb-card-header>
     <nb-card-body>
-        <form class="form-horizontal" #mortgageForm="ngForm" (ngSubmit)="onSubmit(mortgageForm.value)">
+        <form #mortgageForm="ngForm" (ngSubmit)="onSubmit(mortgageForm.value)">
             <!-- <fieldset>
                 <legend>Decision Management Server Connection</legend>
                 <div class="form-group">
@@ -21,11 +21,13 @@
             </fieldset> -->
             <fieldset>
                 <legend>Applicant</legend>
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
                         <input type="text" placeholder="Applicant Name" class="form-control" name="applicantName" ngModel />
                     </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-3 control-label">Age</label>
                     <div class="col-sm-3">
                         <input type="number" required placeholder="Applicant Age" class="form-control" name="applicantAge" ngModel />
@@ -47,7 +49,7 @@
                         <input type="checkbox" name="bankruptcyDetected" class="form-check-input" [(ngModel)]="bankruptcyDetected" /> Bankrupcy Detected
                     </label>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="col-sm-3 control-label">Year</label>
                     <div class="col-sm-3">
                         <input type="number" [disabled]="!bankruptcyDetected" placeholder="Year" class="form-control" name="bankruptcyYear" ngModel
@@ -67,7 +69,7 @@
                         <input type="checkbox" name="incomeValidated" class="form-check-input" [(ngModel)]="incomeValidated" /> Income Validated
                     </label>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="col-sm-3 control-label">Income Amount</label>
                     <div class="col-sm-3">
                         <input type="number" [disabled]="!incomeValidated" placeholder="Income Amount" class="form-control" name="incomeAmount" ngModel
@@ -84,7 +86,7 @@
             </fieldset>
             <fieldset>
                 <legend>Loan Details</legend>
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="col-sm-2 control-label">Loan Amount</label>
                     <div class="col-sm-2">
                         <input type="number" required placeholder="Loan Amount" class="form-control" name="loanAmount" ngModel />
