@@ -16,9 +16,6 @@ export class GreetingComponent {
   useCurrent = false;
   loading = false;
 
-  greeting = '';
-  salutation = '';
-
   constructor(private _ruleExecutorService: RuleExecutorService, private modalService: NgbModal) { }
 
   onSubmit(value: any) {
@@ -29,12 +26,13 @@ export class GreetingComponent {
           this.loading = false;
           const gResponsePackage = 'com.myteam.customer_greeting.GreetingResponse';
           const executionResultIndex = response['execution-results'].results[0].value[gResponsePackage];
-          this.greeting = executionResultIndex.greeting;
-          this.salutation = executionResultIndex.salutation;
 
           const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
           activeModal.componentInstance.modalHeader = 'Greeting Evaluated';
-          activeModal.componentInstance.modalContent = this.greeting + ', ' + this.salutation + value.customerName;
+          let greetingMessage = executionResultIndex.greeting;
+          greetingMessage = greetingMessage + ', ' + executionResultIndex.salutation;
+          greetingMessage = greetingMessage + value.customerName;
+          activeModal.componentInstance.modalContent = greetingMessage;
         } else {
           const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
           activeModal.componentInstance.modalHeader = 'Unable to evaluate';

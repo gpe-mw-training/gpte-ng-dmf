@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { ModalComponent } from '../modals/modal/modal.component';
 import { RuleExecutorService } from '../../@core/data/rule-executor.service';
 
 @Component({
@@ -14,28 +16,15 @@ export class MortgagesComponent {
     public bankruptcyDetected = false;
     public incomeValidated = false;
     public loading = false;
-    public isError = false;
-    public isCompleted = false;
-    public isApproved = false;
-    public loanApprovedRate = 0;
-    public loanInsuranceCost = 0;
-    public loanRejectReason = 'UNKNOWN';
-    public applicationResult;
-    constructor(private _ruleExecutorService: RuleExecutorService) { }
+    constructor(private _ruleExecutorService: RuleExecutorService, private modalService: NgbModal) { }
 
     onSubmit(value: any) {
         this.loading = true;
-        this.isError = false;
-        this.applicationResult = null;
-        this.isCompleted = false;
-        this.isApproved = false;
         this._ruleExecutorService.postMortgagesRules(
             value)
             .subscribe(
             response => {
-                this.applicationResult = response;
                 this.loading = false;
-                this.isCompleted = true;
 
                 let index = 0;
                 if (response['execution-results'].results[0].key === 'loanApplication') {
@@ -47,14 +36,34 @@ export class MortgagesComponent {
                 const resultsIndex = response['execution-results'].results[index];
                 const resultsPackage = resultsIndex.value['mortgages.mortgages.LoanApplication'];
 
-                this.isApproved = resultsPackage.approved;
-                if (this.isApproved) {
-                    this.loanApprovedRate = resultsPackage.approvedRate;
-                    this.loanInsuranceCost = resultsPackage.insuranceCost;
+                const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+                activeModal.componentInstance.modalHeader = 'Greeting Evaluated';
+                if (resultsPackage.approved) {
+                    let approvalMessage = 'Your loan has been approved<br/>';
+                    approvalMessage = approvalMessage + '<b>Approved Rate:</b>';
+                    approvalMessage = approvalMessage + resultsPackage.approvedRate;
+                    approvalMessage = approvalMessage + '<b>Insurance Cost:</b>';
+                    approvalMessage = approvalMessage + resultsPackage.insuranceCost;
+                    activeModal.componentInstance.modalContent = approvalMessage;
                 } else {
-                    this.loanRejectReason = resultsPackage.explanation;
+                    let rejectMessage = 'Your loan has been rejected<br/>';
+                    rejectMessage = rejectMessage + resultsPackage.explanation;
+                    activeModal.componentInstance.modalContent = rejectMessage;
                 }
             },
-            fail => { this.loading = false; this.isError = true; });
+            fail => {
+            this.loading = false;
+                if (fail.status > 0) {
+                    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+                    activeModal.componentInstance.modalHeader = 'Unable to evaluate';
+                    const errMessage = `The configured URL for the API is not recognized as an Execution Server`;
+                    activeModal.componentInstance.modalContent = errMessage;
+                } else {
+                    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+                    activeModal.componentInstance.modalHeader = 'Unable to evaluate';
+                    activeModal.componentInstance.modalContent = `The configured URL for the API is unavailable`;
+                }
+            },
+        );
     }
 }
