@@ -37,22 +37,23 @@ export class MortgagesComponent {
                 const resultsPackage = resultsIndex.value['mortgages.mortgages.LoanApplication'];
 
                 const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-                activeModal.componentInstance.modalHeader = 'Greeting Evaluated';
+                activeModal.componentInstance.modalHeader = 'Mortgage Loan Evaluated';
                 if (resultsPackage.approved) {
-                    let approvalMessage = 'Your loan has been approved<br/>';
-                    approvalMessage = approvalMessage + '<b>Approved Rate:</b>';
+                    let approvalMessage = 'Your loan has been approved     ';
+                    approvalMessage = approvalMessage + '    |Approved Rate|:';
                     approvalMessage = approvalMessage + resultsPackage.approvedRate;
-                    approvalMessage = approvalMessage + '<b>Insurance Cost:</b>';
+                    approvalMessage = approvalMessage + '    |Insurance Cost|:';
                     approvalMessage = approvalMessage + resultsPackage.insuranceCost;
                     activeModal.componentInstance.modalContent = approvalMessage;
                 } else {
-                    let rejectMessage = 'Your loan has been rejected<br/>';
-                    rejectMessage = rejectMessage + resultsPackage.explanation;
+                    let rejectMessage = 'Your loan has been rejected     ';
+                    if (resultsPackage.explanation)
+                        rejectMessage = rejectMessage + resultsPackage.explanation;
                     activeModal.componentInstance.modalContent = rejectMessage;
                 }
             },
             fail => {
-            this.loading = false;
+                this.loading = false;
                 if (fail.status > 0) {
                     const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
                     activeModal.componentInstance.modalHeader = 'Unable to evaluate';

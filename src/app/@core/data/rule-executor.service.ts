@@ -14,11 +14,21 @@ import { Bankruptcy } from './bankruptcy';
 @Injectable()
 export class RuleExecutorService {
 
-  private _dmApiUrl = 'http://demo-kieserver-dtf-rhdm.apps.dev37.openshift.opentlc.com/';
+  private _dmApiUrl = 'http://demo-kieserver-dm-dtf.apps.dev37.openshift.opentlc.com/';
   private _dmUserName = 'adminUser';
   private _dmCredentials = 'test1234!';
   private _containerName: string = 'services/rest/server/containers';
   constructor(private _http: Http) { }
+
+  postPquoteRules(value: any): Observable<any> {
+    const _containerInstance = '/instances/policy-quote';
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    headers.append('Authorization', 'Basic ' + btoa(this._dmUserName + ':' + this._dmCredentials));
+    const options = new RequestOptions({ headers: headers });
+    return this._http.post(
+      this._dmApiUrl + this._containerName + _containerInstance,
+      this.getPolicyQuoteRequest(value), options).map((r: Response) => r.json().result);
+  }
 
   postGreetingRules(value: any): Observable<any> {
     // /services/rest/server/containers/instances/mortgages
@@ -179,6 +189,47 @@ export class RuleExecutorService {
     customer.gender = value.selGender;
     customer.maritalStatus = value.selMaritalStatus;
     return customer;
+  }
+
+  private getPolicyQuoteRequest(value: any): any {
+    const commandRequest = {
+      'commands': [],
+    };
+
+    const insertDriverCommand = {
+      'insert': {
+        'object': {
+          'com.myteam.policy_quote.Driver': {
+            'driverName': value.name,
+            'age': value.age,
+            'creditRate': value.creditRate,
+            'numberOfAccidents': value.accidents,
+            'numberOfTickets': value.tickets,
+          },
+        },
+        'out-identifier': 'driver',
+        'return-object': true,
+      },
+    };
+    commandRequest.commands.push(insertDriverCommand);
+
+    const insertPolicyCommand = {
+      'insert': {
+        'object': {
+          'com.myteam.policy_quote.Policy': {
+            'policyType': 'AUTO',
+            'vehicleYear': value.year,
+            'plates': value.plates,
+            'platesStateCode': value.selPlatesState,
+          },
+        },
+        'out-identifier': 'policy',
+        'return-object': true,
+      },
+    };
+    commandRequest.commands.push(insertPolicyCommand);
+    commandRequest.commands.push({ 'fire-all-rules': {} });
+    return commandRequest;
   }
 
 }
