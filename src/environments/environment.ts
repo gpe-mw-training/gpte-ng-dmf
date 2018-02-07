@@ -10,4 +10,7 @@
 
 export const environment = {
   production: false,
+  dmApiUrl: 'http://demo-kieserver-dm-dtf.apps.dev37.openshift.opentlc.com/',
+  dmUserName: 'adminUser',
+  dmCredentials: 'test1234!',
 };
