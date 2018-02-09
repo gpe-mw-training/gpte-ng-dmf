@@ -1,25 +1,26 @@
 <div class="row">
-  <div class="col-xxxl-3 col-md-6">
-    <ngx-status-card title="Light" type="primary">
-      <i class="nb-lightbulb"></i>
+  <nb-card>
+      <nb-card-header>Decision Server REST API</nb-card-header>
+      <nb-card-body>
+        <span><a href="{{apiUrl}}docs">{{apiUrl}}docs</a></span>
+      </nb-card-body>
+  </nb-card>
+</div>
+<div class="row" *ngIf="apiError">
+    <ngx-status-card title="The Decision Server API is unreachable!!" type="warning" status="WARNING">
+      <i class="nb-flame-circled"></i>
     </ngx-status-card>
-  </div>
-
-  <div class="col-xxxl-3 col-md-6">
-    <ngx-status-card title="Roller Shades" type="success">
-      <i class="nb-roller-shades"></i>
+</div>
+<div class="row" *ngIf="kieContainers.length <= 0">
+    <ngx-status-card title="No containers available in the Decision Server" type="warning" status="WARNING">
+      <i class="nb-flame-circled"></i>
     </ngx-status-card>
-  </div>
-
-  <div class="col-xxxl-3 col-md-6">
-    <ngx-status-card title="Wireless Audio" type="info">
-      <i class="nb-audio"></i>
-    </ngx-status-card>
-  </div>
-
-  <div class="col-xxxl-3 col-md-6">
-    <ngx-status-card title="Coffee Maker" type="warning">
-      <i class="nb-coffee-maker"></i>
+</div><br/><hr/>
+<div class="row" *ngIf="kieContainers.length > 0">
+  <h1>Decision Server Available Containers</h1>
+  <div class="col-xxxl-3 col-md-6" *ngFor="let kContainer of kieContainers">
+    <ngx-status-card title="{{kContainer.alias}}" type="{{ kContainer.status === 'STARTED' ? 'success' : 'warning' }}" status="{{kContainer.status}}">
+      <i class="nb-gear"></i>
     </ngx-status-card>
   </div>
 </div>
