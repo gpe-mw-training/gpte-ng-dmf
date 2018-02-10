@@ -1,13 +1,13 @@
 {
-  "name": "ngx-admin",
-  "version": "2.0.2",
+  "name": "gpte-ng-dmf",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akveo/ngx-admin.git"
+    "url": "git+https://github.com/gpe-mw-training/gpte-ng-dmf.git"
   },
   "bugs": {
-    "url": "https://github.com/akveo/ngx-admin/issues"
+    "url": "https://github.com/gpe-mw-training/gpte-ng-dmf/issues"
   },
   "scripts": {
     "ng": "ng",
@@ -43,31 +43,24 @@
     "@nebular/auth": "2.0.0-rc.4",
     "@nebular/theme": "2.0.0-rc.4",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.8",
-    "@swimlane/ngx-charts": "7.0.1",
-    "angular2-chartjs": "0.4.1",
-    "angular2-toaster": "4.0.1",
     "bootstrap": "4.0.0-beta.2",
-    "chart.js": "2.7.1",
-    "ckeditor": "4.7.3",
     "classlist.js": "1.1.20150312",
     "core-js": "2.5.1",
     "font-awesome": "4.7.0",
-    "intl": "1.2.5",
     "ionicons": "2.0.1",
+    "jquery": "^1.9.1",
     "leaflet": "1.2.0",
     "nebular-icons": "1.0.6",
-    "ng2-ckeditor": "1.1.13",
-    "ng2-smart-table": "1.2.2",
-    "ng2-tree": "2.0.0-rc.4",
-    "ngx-echarts": "2.0.0",
     "normalize.css": "6.0.0",
     "pace-js": "1.0.2",
+    "popper.js": "^1.12.9",
     "roboto-fontface": "0.8.0",
     "rxjs": "5.5.5",
     "tinymce": "4.5.7",
     "typeface-exo": "0.0.22",
     "web-animations-js": "2.2.5",
-    "zone.js": "0.8.18"
+    "zone.js": "0.8.18",
+    "intl": "1.2.5"
   },
   "devDependencies": {
     "@angular/cli": "^1.6.3",
