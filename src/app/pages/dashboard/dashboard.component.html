@@ -11,7 +11,7 @@
       <i class="nb-flame-circled"></i>
     </ngx-status-card>
 </div>
-<div class="row" *ngIf="kieContainers.length <= 0">
+<div class="row" *ngIf="kieContainers.length <= 0 && !apiError">
     <ngx-status-card title="No containers available in the Decision Server" type="warning" status="WARNING">
       <i class="nb-flame-circled"></i>
     </ngx-status-card>
