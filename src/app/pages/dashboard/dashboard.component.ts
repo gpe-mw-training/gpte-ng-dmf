@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 import { RuleExecutorService } from '../../@core/data/rule-executor.service';
-import { KieContainer } from '../../@core/data/kie-container';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -12,7 +11,11 @@ import { KieContainer } from '../../@core/data/kie-container';
 })
 export class DashboardComponent implements OnInit {
 
-  kieContainers: KieContainer[] = [];
+  greetingReady: boolean = false;
+  ppriceReady: boolean = false;
+  pquoteReady: boolean = false;
+  mortgagesReady: boolean = false;
+  detectedContainers: boolean = false;
   apiUrl = environment.dmApiUrl;
   apiError = false;
 
@@ -25,11 +28,22 @@ export class DashboardComponent implements OnInit {
           const kcs = 'kie-containers';
           const kc = 'kie-container';
           const containers = response['result'][kcs][kc];
+          this.detectedContainers = containers.length > 0;
           for (let i = 0; i < containers.length; i++) {
-            const kContainer: KieContainer = new KieContainer();
-            kContainer.alias = containers[i]['container-alias'];
-            kContainer.status = containers[i].status;
-            this.kieContainers.push(kContainer);
+            const alias = containers[i]['container-alias'];
+            const status = containers[i].status;
+            if (alias === 'customer-greeting' && status === 'STARTED') {
+              this.greetingReady = true;
+            }
+            if (alias === 'mortgages' && status === 'STARTED') {
+              this.mortgagesReady = true;
+            }
+            if (alias === 'policy-quote' && status === 'STARTED') {
+              this.pquoteReady = true;
+            }
+            if (alias === 'policy-price' && status === 'STARTED') {
+              this.ppriceReady = true;
+            }
           }
         }
       },
