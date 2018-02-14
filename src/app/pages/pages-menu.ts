@@ -26,4 +26,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'ion-model-s',
     link: '/pages/pquote',
   },
+  {
+    title: 'DMN Policy Price',
+    icon: 'ion-cash',
+    link: '/pages/policy-price',
+  },
 ];

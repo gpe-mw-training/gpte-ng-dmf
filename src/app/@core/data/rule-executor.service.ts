@@ -58,6 +58,30 @@ export class RuleExecutorService {
       this.getMortgagesCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 
+  postDMNInsurancePrice(value: any): Observable<any> {
+    // /services/rest/server/containers/policy-price_1.0.0/dmn
+    // FIXME: it is not possible in this version to use alias instead of container id
+    const _containerInstance = '/policy-price_1.0.0/dmn';
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    headers.append('Authorization',
+      'Basic ' + btoa(environment.dmUserName + ':' + environment.dmCredentials));
+    const options = new RequestOptions({ headers: headers });
+    return this._http.post(
+      environment.dmApiUrl + this._containerName + _containerInstance,
+      this.getPriceRequest(value), options).map((r: Response) => r.json().result);
+  }
+
+  private getPriceRequest(value: any): any {
+    const dmnContext = {
+      'dmn-context': {
+        'Age': value.age,
+        'had previous incidents': value.hasPreviousIncidents,
+      },
+    };
+
+    return dmnContext;
+  }
+
   private getMortgagesCommandRequest(value: any): any {
     const commandRequest = {
       'lookup': 'ksession.stateless',
