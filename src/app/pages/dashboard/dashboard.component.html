@@ -17,7 +17,9 @@
     </ngx-status-card>
 </div><br/><hr/>
 <div class="row" *ngIf="detectedContainers">
-  <h1>Decision Server Available Containers</h1><br/>
+  <h1>Decision Server Available Containers</h1>
+</div>
+<div class="row" *ngIf="detectedContainers">
   <div class="col-xxxl-3 col-md-6">
     <ngx-status-card title="mortgages" type="{{ mortgagesReady ? 'success' : 'warning' }}" status="{{ mortgagesReady ? 'STARTED' : 'NOT AVAILABLE' }}">
       <i class="nb-home"></i>
@@ -38,5 +40,4 @@
       <i class="ion-cash"></i>
     </ngx-status-card>
   </div>
-  
 </div>
