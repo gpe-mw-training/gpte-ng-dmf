@@ -12,7 +12,7 @@
   "scripts": {
     "ng": "ng",
     "conventional-changelog": "conventional-changelog",
-    "start": "npm run build:prod && node server.js",
+    "start": "npm i node-sass@4.8.1 && npm run build:prod && node server.js",
     "build": "ng build --aot",
     "build:prod": "ng build --prod",
     "test": "ng test -sr",
