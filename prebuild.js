@@ -31,4 +31,6 @@ const output = ejs.render(environmentTemplate, Object.assign({}, defaultEnvValue
 fs.writeFileSync(path.join(environmentFilesDirectory, targetEnvironmentFileName), output);
 
 console.log("Written to file:" + output);
+console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+console.log("Written from environment:" + process.env);
 process.exit(0);
