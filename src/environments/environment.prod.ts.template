@@ -5,4 +5,7 @@
  */
 export const environment = {
   production: true,
+  dmApiUrl: '<%= REST_API_URL %>',
+  dmUserName: '<%= REST_API_USER %>',
+  dmCredentials: '<%= REST_API_PWD %>',
 };
