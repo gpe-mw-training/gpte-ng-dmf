@@ -12,7 +12,7 @@
   "scripts": {
     "ng": "ng",
     "conventional-changelog": "conventional-changelog",
-    "start": "npm -i express && npm -i http && npm -i path && node server.js",
+    "start": "npm install express && npm install http && npm install path && node server.js",
     "build": "ng build --prod --aot",
     "build:aot": "ng build --aot",
     "build:prod": "ng build --prod",
