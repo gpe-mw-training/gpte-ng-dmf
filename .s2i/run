@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# Purpose of this run script is to append REST API configuration for KIE-SERVER to the angular application.
-
-echo "Got a project: ["$OCP_NAMESPACE"]"
-echo "Also got a cluster: ["$OCP_CLUSTER"]"
