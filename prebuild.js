@@ -32,5 +32,7 @@ fs.writeFileSync(path.join(environmentFilesDirectory, targetEnvironmentFileName)
 
 console.log("Written to file:" + output);
 console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-console.log("Written from environment:" + process.env);
+console.log("REST URL:" + process.env.REST_API_URL);
+console.log("REST USER:" + process.env.REST_API_USER);
+console.log("REST PASSWORD:" + process.env.REST_API_PWD);
 process.exit(0);
