@@ -15,7 +15,7 @@ const targetDevFileName = 'environment.ts';
 // because build should fail if you don't provide the correct values
 // for your production environment
 const defaultEnvValues = {
-    REST_API_URL: 'http://demo-kieserver-dm-dtf.apps.dev37.openshift.opentlc.com/',
+    REST_API_URL: 'http://demo-kieserver-dm-dtf.apps.dev37.openshift.opentlc.com',
     REST_API_USER: 'adminUser',
     REST_API_PWD: 'test1234!',
 };
