@@ -98,13 +98,10 @@ objects:
     source:
       git:
         ref: master
-# dtorresf: new git repository with templated angular2 application
         uri: 'https://github.com/gpe-mw-training/gpte-ng-dmf.git'
       type: Git
     strategy:
       sourceStrategy:
-        # dtorresf: use environment variables to obtain namespace and cluster name for kie-server endpoint configuration
-        # replaces the old ng-environment configmap
         env:
           - name: OCP_NAMESPACE
             valueFrom:
@@ -119,7 +116,6 @@ objects:
           - name: NODE_ENV
             value: 'production'
         from:
-# dtorresf: Using the available ImageStreamTag from the openshift registry
           kind: ImageStreamTag
           name: 'nodejs:latest'
           namespace: openshift
@@ -142,13 +138,11 @@ objects:
       application: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}-ng-dmf
   spec:
-    # JA Bride:  setting all DCs to paused.  Will then start each one via ansible
-    paused: true
+    paused: false
     replicas: 1
     selector:
       deploymentConfig: ${APPLICATION_NAME}-ng-dmf
     strategy:
-      # https://github.com/redhat-gpe/bxms_decision_mgmt_foundations/issues/39
       type: Rolling
     template:
       metadata:
@@ -186,7 +180,6 @@ objects:
             requests:
               cpu: "0.25"
               memory: 256Mi
-# dtorresf: ng-environment configMap replaced by environment variables at BuildConfig
     triggers:
     - imageChangeParams:
         automatic: true
