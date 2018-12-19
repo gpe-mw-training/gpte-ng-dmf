@@ -17,7 +17,7 @@
     "build:aot": "ng build --aot",
     "build:prod": "ng build --prod",
     "prebuild": "./prebuild.js",
-    "postinstall": "chmod +x ./prebuild.js && chmod 666 ./src/environments/environment.prod.ts && npm install",
+    "postinstall": "chmod +x ./prebuild.js && chmod 666 ./src/environments/environment.prod.ts",
     "test": "ng test -sr",
     "test:coverage": "rimraf coverage && npm run test -- -cc",
     "lint": "ng lint --type-check",
