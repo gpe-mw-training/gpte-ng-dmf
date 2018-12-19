@@ -17,7 +17,7 @@
     "build:aot": "ng build --aot",
     "build:prod": "ng build --prod",
     "prebuild": "./prebuild.js",
-    "postinstall": "npm install -g ng-cli && ng build && chmod +x ./prebuild.js",
+    "postinstall": "npm install -g @angular/cli && ng build && chmod +x ./prebuild.js",
     "test": "ng test -sr",
     "test:coverage": "rimraf coverage && npm run test -- -cc",
     "lint": "ng lint --type-check",
