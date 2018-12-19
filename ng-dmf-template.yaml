@@ -1,0 +1,199 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  annotations:
+    iconClass: icon-jboss
+    tags: rhdm,angujar,nodejs
+    version: "2.0"
+    openshift.io/display-name: Angular JS Application to interact with Red Hat Decision Manager 7.1
+    openshift.io/provider-display-name: Red Hat, Inc. - GPTE
+    description: Angular JS Application to interact with Red Hat Decision Manager 7.1 Created with education purposes of foundational course
+    template.openshift.io/long-description: Angular JS Application to interact with Red Hat Decision Manager 7.1 Created with education purposes of foundational course
+    template.openshift.io/documentation-url: https://access.redhat.com/documentation/en-us/red_hat_decision_manager/7.1/html/deploying_a_red_hat_decision_manager_7.1_authoring_environment_on_red_hat_openshift_container_platform/
+    template.openshift.io/support-url: https://access.redhat.com
+    template.openshift.io/bindable: "false"
+  name: ng-dmf-template
+labels:
+  template: ng-dmf-template
+  rhdm: "1.1"
+message: |-
+          A new angular application to interact with RHDM7.1 Has been created.
+parameters:
+- displayName: Application Name
+  description: The name for the application.
+  name: APPLICATION_NAME
+  value: myapp
+  required: true
+- displayName: KIE Admin User
+  description: KIE administrator username
+  name: KIE_ADMIN_USER
+  value: adminUser
+  required: false
+- displayName: KIE Admin Password
+  description: KIE administrator password
+  name: KIE_ADMIN_PWD
+  from: "[a-zA-Z]{6}[0-9]{1}!"
+  generate: expression
+  required: false
+- displayName: Cluster name
+  name: KIE_ROUTE
+  value: http://dm-foundations-rhdmcentr-dtf-pam7.apps.dev311.openshift.opentlc.com
+  required: true
+  description: 'remote URL from which the client will interact with the KIE-SERVER, don't include a forward-slash (/) at the end of the string. Valid example: http://dm-foundations-rhdmcentr-dtf-pam7.apps.dev311.openshift.opentlc.com'
+- displayName: Custom http Route Hostname
+  description: 'Custom hostname for http service route. Leave blank for default hostname, e.g.: <application-name>-angular-<project>.<default-domain-suffix>'
+  name: HOSTNAME_HTTP
+  value: ''
+  required: false
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The nodejs web server's http port for the angular application demo.
+    labels:
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}-ng-dmf
+  spec:
+    ports:
+    - port: 8080
+      targetPort: 8080
+    selector:
+      deploymentConfig: ${APPLICATION_NAME}-ng-dmf
+- apiVersion: v1
+  id: ${APPLICATION_NAME}-ng-dmf-http
+  kind: Route
+  metadata:
+    annotations:
+      description: Route for nodejs mortgages http service.
+    labels:
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}-ng-dmf
+  spec:
+    host: ${HOSTNAME_HTTP}
+    to:
+      name: ${APPLICATION_NAME}-ng-dmf
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}-ng-dmf
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ng-dmf:latest
+    postCommit: {}
+    resources:
+      limits:
+        cpu: "0.5"
+        memory: 2Gi
+      requests:
+        cpu: "0.25"
+        memory: 1Gi
+    runPolicy: Serial
+    source:
+      git:
+        ref: master
+# dtorresf: new git repository with templated angular2 application
+        uri: 'https://github.com/gpe-mw-training/gpte-ng-dmf.git'
+      type: Git
+    strategy:
+      sourceStrategy:
+        # dtorresf: use environment variables to obtain namespace and cluster name for kie-server endpoint configuration
+        # replaces the old ng-environment configmap
+        env:
+          - name: OCP_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: REST_API_URL
+            value: '${KIE_ROUTE}'
+          - name: REST_API_USER
+            value: '${KIE_ADMIN_USER}'
+          - name: REST_API_PWD
+            value: '${KIE_ADMIN_PWD}'
+          - name: NODE_ENV
+            value: 'production'
+        from:
+# dtorresf: Using the available ImageStreamTag from the openshift registry
+          kind: ImageStreamTag
+          name: 'nodejs:latest'
+          namespace: openshift
+      type: Source
+    triggers:
+      - type: ImageChange
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      application: ${APPLICATION_NAME}
+    name: ng-dmf
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}-ng-dmf
+  spec:
+    # JA Bride:  setting all DCs to paused.  Will then start each one via ansible
+    paused: true
+    replicas: 1
+    selector:
+      deploymentConfig: ${APPLICATION_NAME}-ng-dmf
+    strategy:
+      # https://github.com/redhat-gpe/bxms_decision_mgmt_foundations/issues/39
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          application: ${APPLICATION_NAME}
+          deploymentConfig: ${APPLICATION_NAME}-ng-dmf
+        name: ${APPLICATION_NAME}-ng-dmf
+      spec:
+        containers:
+        - image: ng-dmf:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 50
+            periodSeconds: 10
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 1
+          name: ${APPLICATION_NAME}-ng-dmf
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          readinessProbe:
+            initialDelaySeconds: 50
+            failureThreshold: 30
+            periodSeconds: 10
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: 512Mi
+            requests:
+              cpu: "0.25"
+              memory: 256Mi
+# dtorresf: ng-environment configMap replaced by environment variables at BuildConfig
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APPLICATION_NAME}-ng-dmf
+        from:
+          kind: ImageStreamTag
+          name: ng-dmf:latest
+      type: ImageChange
+    - type: ConfigChange
