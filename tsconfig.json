@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -16,7 +17,11 @@
       "dom"
     ],
     "plugins": [
-      { "name": "tslint-language-service"}
-    ]
+      {
+        "name": "tslint-language-service"
+      }
+    ],
+    "module": "es2015",
+    "baseUrl": "./"
   }
 }
