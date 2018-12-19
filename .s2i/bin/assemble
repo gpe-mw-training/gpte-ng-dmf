@@ -8,12 +8,12 @@ if [ "$DEV_MODE" == true ] ; then
 	set -x
 fi
 
-echo "      _                       _"
+echo "_     _                       _"
 echo " _ __| |__         __ _ _ __ | |_ ___ "
 echo "| '__| '_ \\ _____ / _\` | '_ \\| __/ _ \\"
 echo "| |  | | | |_____| (_| | |_) | ||  __/"
 echo "|_|  |_| |_|      \\__, | .__/ \\__\\___|"
-echo "                   |___/|_|"
+echo "_                  |___/|_|"
 echo ""
 echo "---> Installing application source"
 cp -Rfp /tmp/src/. ./

@@ -8,6 +8,7 @@ const ejs = require('ejs');
 const environmentFilesDirectory = path.join(__dirname, './src/environments');
 const targetEnvironmentTemplateFileName = 'environment.prod.ts.template';
 const targetEnvironmentFileName = 'environment.prod.ts';
+const targetDevFileName = 'environment.ts';
 
 // Define default values in case there are no defined ones,
 // but you should define only non-crucial values here,
@@ -29,6 +30,7 @@ const environmentTemplate = fs.readFileSync(
 const output = ejs.render(environmentTemplate, Object.assign({}, defaultEnvValues, process.env));
 // Write environment file
 fs.writeFileSync(path.join(environmentFilesDirectory, targetEnvironmentFileName), output);
+fs.writeFileSync(path.join(environmentFilesDirectory, targetDevFileName), output);
 
 console.log("Written to file:" + output);
 console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
