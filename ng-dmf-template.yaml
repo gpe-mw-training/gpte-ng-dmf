@@ -36,11 +36,11 @@ parameters:
   from: "[a-zA-Z]{6}[0-9]{1}!"
   generate: expression
   required: false
-- displayName: Cluster name
+- displayName: KIE ROUTE NAME
   name: KIE_ROUTE
-  value: http://dm-foundations-rhdmcentr-dtf-pam7.apps.dev311.openshift.opentlc.com
+  value: 'http://dm-foundations-rhdmcentr-dtf-pam7.apps.dev311.openshift.opentlc.com'
   required: true
-  description: 'remote URL from which the client will interact with the KIE-SERVER, don't include a forward-slash (/) at the end of the string. Valid example: http://dm-foundations-rhdmcentr-dtf-pam7.apps.dev311.openshift.opentlc.com'
+  description: 'remote URL from which the client will interact with the KIE-SERVER, don not include a forward-slash (/) at the end of the string. Valid example: http://dm-foundations-rhdmcentr-dtf-pam7.apps.dev311.openshift.opentlc.com'
 - displayName: Custom http Route Hostname
   description: 'Custom hostname for http service route. Leave blank for default hostname, e.g.: <application-name>-angular-<project>.<default-domain-suffix>'
   name: HOSTNAME_HTTP
