@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../../environments/environment';
 
 import 'rxjs/add/operator/map';
 
@@ -11,6 +10,7 @@ import { Applicant } from './applicant';
 import { IncomeSource } from './income-source';
 import { LoanApplication } from './loan-application';
 import { Bankruptcy } from './bankruptcy';
+import { KieServerConfig } from './kieserver-config';
 
 @Injectable()
 export class RuleExecutorService {
@@ -18,69 +18,61 @@ export class RuleExecutorService {
   constructor(private _http: Http) { }
 
   getAllContainers(url?: string, userName?: string, password?: string): Observable<Response> {
+    const cfg: KieServerConfig = this.getKieServerConfig(url, userName, password);
+
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    headers.append('Authorization', 'Basic ' + btoa(userName + ':' + password));
+    headers.append('Authorization', 'Basic ' + btoa(cfg.user + ':' + cfg.password));
     const options = new RequestOptions({ headers: headers });
 
-    if ( !url ) {
-      url = localStorage.getItem('ksUrl');
-    }
-
-    if ( !userName ) {
-      userName = localStorage.getItem('ksUserName');
-    }
-
-    if ( !password ) {
-      password = localStorage.getItem('ksPassword');
-    }
-
-    return this._http.get(url + this._containerName, options).map((r: Response) => r.json());
+    return this._http.get(cfg.endpoint + this._containerName, options).map((r: Response) => r.json());
   }
 
   postPquoteRules(value: any): Observable<any> {
+    const cfg: KieServerConfig = this.getKieServerConfig();
     const _containerInstance = '/instances/policy-quote';
     const headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append('Authorization',
-      'Basic ' + btoa(environment.dmUserName + ':' + environment.dmCredentials));
+      'Basic ' + btoa(cfg.user + ':' + cfg.password));
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      environment.dmApiUrl + this._containerName + _containerInstance,
+      cfg.endpoint + this._containerName + _containerInstance,
       this.getPolicyQuoteRequest(value), options).map((r: Response) => r.json().result);
   }
 
   postGreetingRules(value: any): Observable<any> {
-    // /services/rest/server/containers/instances/mortgages
+    const cfg: KieServerConfig = this.getKieServerConfig();
     const _containerInstance = '/instances/customer-greeting';
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    headers.append('Authorization', 'Basic ' + btoa(environment.dmUserName + ':' + environment.dmCredentials));
+    headers.append('Authorization', 'Basic ' + btoa(cfg.user + ':' + cfg.password));
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      environment.dmApiUrl + this._containerName + _containerInstance,
+      cfg.endpoint + this._containerName + _containerInstance,
       this.getGreetingCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 
   postMortgagesRules(value: any): Observable<any> {
     // /services/rest/server/containers/instances/mortgages
+    const cfg: KieServerConfig = this.getKieServerConfig();
     const _containerInstance = '/instances/mortgages';
     const headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append('Authorization',
-      'Basic ' + btoa(environment.dmUserName + ':' + environment.dmCredentials));
+      'Basic ' + btoa(cfg.user + ':' + cfg.password));
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      environment.dmApiUrl + this._containerName + _containerInstance,
+      cfg.endpoint + this._containerName + _containerInstance,
       this.getMortgagesCommandRequest(value), options).map((r: Response) => r.json().result);
   }
 
   postDMNInsurancePrice(value: any): Observable<any> {
     // /services/rest/server/containers/policy-price_1.0.0/dmn
-    // FIXME: it is not possible in this version to use alias instead of container id
-    const _containerInstance = '/policy-price_1.0.0/dmn';
+    const cfg: KieServerConfig = this.getKieServerConfig();
+    const _containerInstance = '/policy-price/dmn';
     const headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append('Authorization',
-      'Basic ' + btoa(environment.dmUserName + ':' + environment.dmCredentials));
+      'Basic ' + btoa(cfg.user + ':' + cfg.password));
     const options = new RequestOptions({ headers: headers });
     return this._http.post(
-      environment.dmApiUrl + this._containerName + _containerInstance,
+      cfg.endpoint + this._containerName + _containerInstance,
       this.getPriceRequest(value), options).map((r: Response) => r.json().result);
   }
 
@@ -273,6 +265,16 @@ export class RuleExecutorService {
     commandRequest.commands.push(insertPolicyCommand);
     commandRequest.commands.push({ 'fire-all-rules': {} });
     return commandRequest;
+  }
+
+  private getKieServerConfig(url?: string, userName?: string, password?: string): KieServerConfig {
+    const ksc = new KieServerConfig();
+
+    ksc.endpoint = url ? url : localStorage.getItem('ksUrl');
+    ksc.user = userName ? userName : localStorage.getItem('ksUserName');
+    ksc.password = password ? password : localStorage.getItem('ksPassword');
+
+    return ksc;
   }
 
 }

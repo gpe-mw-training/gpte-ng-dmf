@@ -16,12 +16,16 @@ export class DashboardComponent implements OnInit {
   pquoteReady: boolean = false;
   mortgagesReady: boolean = false;
   detectedContainers: boolean = false;
-  apiUrl = environment.dmApiUrl;
+  apiUrl = localStorage.getItem('ksUrl');
   apiError = false;
 
   constructor(private _res: RuleExecutorService) { }
 
   ngOnInit(): void {
+    if (!localStorage.getItem('ksUrl')) {
+      this.apiError = true;
+      return;
+    }
     this._res.getAllContainers().subscribe (
       response => {
         if (response) {

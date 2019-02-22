@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="!apiError">
   <nb-card>
       <nb-card-header>Decision Server REST API</nb-card-header>
       <nb-card-body>
@@ -7,7 +7,7 @@
   </nb-card>
 </div>
 <div class="row" *ngIf="apiError">
-    <ngx-status-card title="The Decision Server API is unreachable!!" type="warning" status="WARNING">
+    <ngx-status-card title="The Decision Server API is unreachable, check your configuration under the settings option" type="warning" status="WARNING">
       <i class="nb-flame-circled"></i>
     </ngx-status-card>
 </div>
