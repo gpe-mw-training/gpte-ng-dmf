@@ -7,6 +7,7 @@ import { GreetingComponent } from './greeting/greeting.component';
 import { MortgagesComponent } from './mortgages/mortgages.component';
 import { PquoteComponent } from './pquote/pquote.component';
 import { PolicyPriceComponent } from './policy-price/policy-price.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [{
   path: '',
@@ -26,6 +27,9 @@ const routes: Routes = [{
   }, {
     path: 'policy-price',
     component: PolicyPriceComponent,
+  }, {
+    path: 'settings',
+    component: SettingsComponent,
   }, {
     path: '',
     redirectTo: 'dashboard',

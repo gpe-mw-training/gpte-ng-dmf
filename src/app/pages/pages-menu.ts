@@ -31,4 +31,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'ion-cash',
     link: '/pages/policy-price',
   },
+  {
+    title: 'DM Settings',
+    icon: 'nb-gear',
+    link: '/pages/settings',
+  },
 ];

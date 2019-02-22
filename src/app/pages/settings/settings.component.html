@@ -1,0 +1,31 @@
+<nb-card>
+    <nb-card-header>Demo App Settings</nb-card-header>
+    <nb-card-body>
+        <form #settingsForm="ngForm" (ngSubmit)="onSubmit(settingsForm.value)">
+            <fieldset>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">Decision Server Route</label>
+                    <div class="col-sm-9">
+                        <input type="url" pattern="http://.*" title="Please provide the http URL for the kie-server route" required placeholder="http://rhdm-kieserver-dm.apps.guid.openshift.opentlc.com/" class="form-control" name="route" ngModel />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">User</label>
+                    <div class="col-sm-3">
+                        <input type="text" required placeholder="kie-server user name" class="form-control" name="user" [(ngModel)]="user" />
+                    </div>
+                    <label class="col-sm-3 control-label">Password</label>
+                    <div class="col-sm-3">
+                        <input type="password" required placeholder="kie-server user name" class="form-control" name="password" [(ngModel)]="password" />
+                    </div>
+                </div>
+            </fieldset>
+            <button [disabled]="!settingsForm.form.valid" type="submit" class="btn btn-primary">Validate and Save</button>
+        </form>
+    </nb-card-body>
+    <nb-card-footer [hidden]="!errors">
+        <div class="col-sm-12 alert-danger">
+            There has been an error connecting to this decision server, please check your configuration and try again.
+        </div>
+    </nb-card-footer>
+</nb-card>

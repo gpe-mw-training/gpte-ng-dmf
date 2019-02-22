@@ -17,11 +17,24 @@ export class RuleExecutorService {
   private _containerName: string = 'services/rest/server/containers';
   constructor(private _http: Http) { }
 
-  getAllContainers(): Observable<Response> {
+  getAllContainers(url?: string, userName?: string, password?: string): Observable<Response> {
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    headers.append('Authorization', 'Basic ' + btoa(environment.dmUserName + ':' + environment.dmCredentials));
+    headers.append('Authorization', 'Basic ' + btoa(userName + ':' + password));
     const options = new RequestOptions({ headers: headers });
-    return this._http.get(environment.dmApiUrl + this._containerName, options).map((r: Response) => r.json());
+
+    if ( !url ) {
+      url = localStorage.getItem('ksUrl');
+    }
+
+    if ( !userName ) {
+      userName = localStorage.getItem('ksUserName');
+    }
+
+    if ( !password ) {
+      password = localStorage.getItem('ksPassword');
+    }
+
+    return this._http.get(url + this._containerName, options).map((r: Response) => r.json());
   }
 
   postPquoteRules(value: any): Observable<any> {

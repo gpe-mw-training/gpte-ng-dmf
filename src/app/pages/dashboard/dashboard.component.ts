@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   constructor(private _res: RuleExecutorService) { }
 
   ngOnInit(): void {
-    this._res.getAllContainers().subscribe(
+    this._res.getAllContainers().subscribe (
       response => {
         if (response) {
           const kcs = 'kie-containers';

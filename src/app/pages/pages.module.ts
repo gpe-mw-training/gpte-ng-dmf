@@ -7,6 +7,7 @@ import { MortgagesModule } from './mortgages/mortgages.module';
 import { PquoteModule } from './pquote/pquote.module';
 import { PolicyPriceModule } from './policy-price/policy-price.module';
 import { PagesRoutingModule } from './pages-routing.module';
+import { SettingsModule } from './settings/settings.module';
 import { ThemeModule } from '../@theme/theme.module';
 
 const PAGES_COMPONENTS = [
@@ -22,6 +23,7 @@ const PAGES_COMPONENTS = [
     MortgagesModule,
     PquoteModule,
     PolicyPriceModule,
+    SettingsModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,
