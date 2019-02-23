@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ModalComponent } from '../modals/modal/modal.component';
 import { RuleExecutorService } from '../../@core/data/rule-executor.service';
@@ -12,7 +11,7 @@ export class SettingsComponent {
     errors = false;
     user: string = 'adminUser';
     password: string = 'r3dh4t1!';
-    constructor(private _ms: NgbModal, private _res: RuleExecutorService) { }
+    constructor(private _res: RuleExecutorService) { }
 
     onSubmit(value: any) {
         let url: string = value.route;
