@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-import { ModalComponent } from '../modals/modal/modal.component';
 import { RuleExecutorService } from '../../@core/data/rule-executor.service';
 
 @Component({
