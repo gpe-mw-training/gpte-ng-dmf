@@ -50,7 +50,6 @@ objects:
       application: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}-ng-dmf
   spec:
-    host: ${HOSTNAME_HTTP}
     to:
       name: ${APPLICATION_NAME}-ng-dmf
 - apiVersion: v1
