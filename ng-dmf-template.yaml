@@ -5,7 +5,7 @@ metadata:
   annotations:
     iconClass: icon-jboss
     tags: rhdm,angujar,nodejs
-    version: "3.0"
+    version: "4.0"
     openshift.io/display-name: Angular JS Application to interact with Red Hat Decision Manager 7.1
     openshift.io/provider-display-name: Red Hat, Inc. - GPTE
     description: Angular JS Application to interact with Red Hat Decision Manager 7 Created with education purposes of foundational course
@@ -16,9 +16,9 @@ metadata:
   name: ng-dmf-template
 labels:
   template: ng-dmf-template
-  rhdm: "1.1"
+  rhdm: "7.6"
 message: |-
-          A new angular application to interact with RHDM7.1 Has been created.
+          A new angular application to interact with RHDM7.6 Has been created.
 parameters:
 - displayName: Application Name
   description: The name for the application.
@@ -52,57 +52,6 @@ objects:
   spec:
     to:
       name: ${APPLICATION_NAME}-ng-dmf
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    labels:
-      application: ${APPLICATION_NAME}
-    name: ${APPLICATION_NAME}-ng-dmf
-  spec:
-    nodeSelector: null
-    output:
-      to:
-        kind: ImageStreamTag
-        name: ng-dmf:latest
-    postCommit: {}
-    resources:
-      limits:
-        cpu: "0.5"
-        memory: 2Gi
-      requests:
-        cpu: "0.25"
-        memory: 0.5Gi
-    runPolicy: Serial
-    source:
-      git:
-        ref: master
-        uri: 'https://github.com/gpe-mw-training/gpte-ng-dmf.git'
-      type: Git
-    strategy:
-      sourceStrategy:
-        env:
-          - name: OCP_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: NODE_ENV
-            value: 'production'
-        from:
-          kind: ImageStreamTag
-          name: 'nodejs:8'
-          namespace: openshift
-      type: Source
-    triggers:
-      - type: ImageChange
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      application: ${APPLICATION_NAME}
-    name: ng-dmf
-  spec:
-    lookupPolicy:
-      local: false
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -159,6 +108,7 @@ objects:
         - ${APPLICATION_NAME}-ng-dmf
         from:
           kind: ImageStreamTag
-          name: ng-dmf:latest
+          namespace: "openshift"
+          name: "dmf-angular:1.0"
       type: ImageChange
     - type: ConfigChange
