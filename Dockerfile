@@ -6,13 +6,9 @@ RUN npm install -g @angular/cli > /dev/null
 RUN npm install
 RUN ng build
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-FROM nginx:1.15
+FROM nginx:stable-alpine
 COPY --from=build-stage /app/dist/ /usr/share/nginx/html
 # Copy the default nginx.conf
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN export nginxid=$(id -u nginx)
-USER root
-RUN chown nginx:root /var/cache/nginx && chmod -R 664 /var/cache/nginx
-USER $nginxid 
-EXPOSE 80
+EXPOSE 8080
